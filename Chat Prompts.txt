@@ -1,0 +1,70 @@
+Okay I think I know now what I can use:
+
+
+
+- Colab Pro (T4)
+
+
+
+Document Cleaning
+
+- Remove Artifacts: Regular Expressions (Regex
+
+- Merge Hyphenated Words
+
+
+
+Structure Aware Chunking
+
+- Recursive Chunking with specific separators that is recommended for the Pdf
+
+-  Use the Rule numbers as primary delimiters.
+
+- Context Injection (Metadata) - prepend the Rule Number and Rule Title
+
+
+
+Handling Tables
+
+-  Extract tables separately using a library like pdfplumber or Tabula-py
+
+- Convert these tables into JSON or Markdown format before embedding
+
+Embedding Models
+
+-bge-small-en-v1.5
+
+Large Language Models (LLM)
+
+-Llama 3.1 8B Instruct
+
+Vector Database
+
+- ChromaDB
+
+Implementation Outline (Mental Sandbox)
+Ingest: Load Osh-Handbook.pdf.
+
+Clean: Remove --- PAGE --- and source tags.
+
+Split:
+
+Split 1: Extract Tables (Table 8, Table 47, etc.) -> Convert to Markdown -> Chunk.
+
+Split 2: Extract Text -> Split by "Rule \d\d\d\d" -> Chunk -> Prepend Rule Title to Chunk.
+
+Embed: Pass chunks to BAAI/bge-small-en-v1.5.
+
+Store: Save to ChromaDB.
+
+Retrieve:
+
+User Query: "How many safety officers do I need for 500 workers?"
+
+System searches Vector DB -> Retrieves "Rule 1033 Training and Personnel Complement".
+
+Generate: LLM answers based only on retrieved context.
+
+Evaluation Metrics
+
+- RAGAS (Retrieval Augmented Generation Assessment)
